@@ -1,0 +1,232 @@
+{% extends "base.html" %}
+
+{% block title %}Event Schedule{% endblock %}
+
+{% block body %}
+<style>
+    /* Base Layout */
+body {
+    background-color: #f4f1e1; /* Soft, royal ivory background */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Elegant font */
+}
+
+.container {
+    max-width: 1200px; /* Centered container for a better layout */
+}
+
+/* Styling for Event Cards */
+.card {
+    border: 0;
+    border-radius: 15px; /* Rounded corners for a smooth look */
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transition */
+    background-color: #ffffff; /* White background for the card */
+}
+
+.card:hover {
+    transform: scale(1.05); /* Card enlarges slightly on hover */
+    box-shadow: 0 15px 25px rgba(0, 0, 0, 0.15); /* Stronger shadow on hover */
+}
+
+/* Highlighted Event Card Styling */
+.highlight-event {
+    border: 5px solid #ffd700; /* Bold gold border */
+    background-color: #f8f1d3; /* Light gold background */
+    color: #3d3a29; /* Dark olive text color */
+    box-shadow: 0 8px 20px rgba(255, 215, 0, 0.7); /* Golden glow */
+    transform: scale(1.1); /* Slightly enlarged */
+    transition: all 0.4s ease-in-out;
+    padding: 15px;
+    border-radius: 10px;
+    animation: beat 1.5s infinite ease-in-out;
+}
+
+@keyframes beat {
+    0%, 100% {
+        transform: scale(1.05);
+    }
+    25% {
+        transform: scale(1.1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    75% {
+        transform: scale(1.1);
+    }
+}
+
+.highlight-event:hover {
+    transform: scale(1.15); /* Slightly larger on hover */
+    box-shadow: 0 12px 25px rgba(255, 215, 0, 0.9); /* Brighter gold shadow */
+    background-color: #f9e69b; /* Lighter gold background on hover */
+    animation: none; /* Disable the pulsing when hovered */
+}
+
+/* Add Event Button */
+.btn-primary {
+    background-color: #27ae60; /* Rich emerald green */
+    border: 2px solid #1e8449; /* Darker emerald border */
+    font-weight: bold;
+    padding: 12px 24px;
+    border-radius: 30px;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: #2ecc71; /* Lighter emerald green */
+    border-color: #1abc9c; /* Lighter green border */
+}
+
+/* Modal Styling */
+.modal-content {
+    background-color: #fff;
+    border-radius: 15px; /* Smooth corners */
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1); /* Soft shadow */
+}
+
+.modal-header {
+    border-bottom: 2px solid #f0f0f0;
+    background-color: #f9f9f9;
+    padding: 20px;
+}
+
+.modal-title {
+    font-size: 1.8rem;
+    color: #2c3e50;
+    font-weight: 600;
+    text-align: center;
+}
+
+.modal-body {
+    padding: 40px;
+}
+
+/* Form Controls */
+.form-control {
+    border-radius: 8px;
+    padding: 12px;
+    border: 2px solid #ddd;
+    font-size: 1rem;
+    margin-bottom: 15px;
+}
+
+.form-control:focus {
+    border-color: #27ae60;
+    box-shadow: 0 0 5px rgba(39, 174, 96, 0.5);
+}
+
+button[type="submit"] {
+    background-color: #27ae60;
+    color: white;
+    padding: 12px 30px;
+    border-radius: 30px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    border: none;
+}
+
+button[type="submit"]:hover {
+    background-color: #2ecc71;
+    border-color: #1abc9c;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .btn-primary {
+        padding: 10px 20px;
+    }
+
+    .modal-content {
+        width: 90%;
+    }
+
+    .modal-body {
+        padding: 20px;
+    }
+
+    button[type="submit"] {
+        padding: 10px 25px;
+    }
+
+}
+
+</style>
+<div class="container py-5">
+    <div class="text-center mb-5">
+        <h2 class="fw-bold text-dark" style="font-size: 3rem; letter-spacing: 2px;">Today's Events</h2>
+        <p class="text-muted" style="font-size: 1.2rem; max-width: 700px; margin: 0 auto;">Stay up to date with all the exciting events happening today at our premium venue.</p>
+    </div>
+
+    <div class="row g-4">
+        {% for event in page_obj %}
+        <div class="col-md-4">
+            <!-- Apply the highlight-event class only if the event's date is today -->
+            <div class="card shadow-lg border-0 rounded-4 h-100 {% if event.time.date == today %}highlight-event{% endif %}">
+                {% if event.image %}
+                <img src="{{ event.image.url }}" class="card-img-top rounded-4" alt="Event Image" style="height: 200px; object-fit: cover;">
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title text-primary mb-3" style="font-size: 1.7rem;">{{ event.name }}</h5>
+                    <p class="card-text text-muted mb-2" style="font-size: 1rem;">
+                        <strong>Time:</strong> {{ event.time|date:"d M Y, h:i A" }}
+                      </p>
+                    <p class="card-text text-muted mb-2" style="font-size: 1rem;"><strong>Location:</strong> {{ event.location }}</p>
+                    <p class="card-text text-muted" style="font-size: 0.9rem;"><small>Added by: {{ event.created_by.username }} | {{ event.created_at|date:"F j, Y, H:i" }}</small></p>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12 text-center">
+            <p class="fs-4">No events found. Add your own and make it an unforgettable day!</p>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Pagination -->
+    <div class="text-center mt-5">
+        {% if page_obj.has_previous %}
+        <a href="?page=1" class="btn btn-outline-secondary rounded-pill me-3">First</a>
+        <a href="?page={{ page_obj.previous_page_number }}" class="btn btn-outline-secondary rounded-pill me-3">Previous</a>
+        {% endif %}
+
+        <span class="btn btn-outline-primary disabled">{{ page_obj.number }}</span>
+
+        {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}" class="btn btn-outline-secondary rounded-pill me-3">Next</a>
+        <a href="?page={{ page_obj.paginator.num_pages }}" class="btn btn-outline-secondary rounded-pill me-3">Last</a>
+        {% endif %}
+    </div>
+
+    <!-- Add Event Button -->
+<div class="text-center mt-5">
+    <button type="button" class="btn btn-primary btn-lg rounded-pill px-5" data-bs-toggle="modal" data-bs-target="#addEventModal">
+        + Add Event
+    </button>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="addEventModal" tabindex="-1" aria-labelledby="addEventModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content rounded-4">
+            <div class="modal-header border-0">
+                <h5 class="modal-title fw-bold" id="addEventModalLabel" style="color: #2c3e50;">Create New Event</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4">
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <div class="text-center mt-4">
+                        <small class="d-block text-muted mb-3">* A reminder via email and SMS will be sent before your event!</small>
+                        <button type="submit" class="btn btn-success btn-lg rounded-pill px-5">Submit Event</button>
+                    </div>                    
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+</div>
+
+{% endblock %}

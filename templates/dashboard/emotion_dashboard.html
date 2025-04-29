@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}Admin Dashboard{% endblock %}
+
+{% block body %}
+    <div class="container mt-5">
+        <h1>Admin Dashboard</h1>
+        <h2>Emotion Trends for the Last Week</h2>
+        <ul>
+            {% for emotion, count in aggregated_data %}
+                <li>{{ emotion }}: {{ count }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endblock %}

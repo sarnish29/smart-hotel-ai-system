@@ -1,0 +1,292 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}My Site{% endblock %}</title>
+
+    <!-- CDN links -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"> <!-- Bootstrap CSS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> <!-- jQuery -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script> <!-- Popper.js -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.bundle.min.js"></script> <!-- Bootstrap JS + Popper.js -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
+
+    <link rel="icon" type="image/png" href="{% static 'images/favicon.png' %}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet"/>
+
+    {% block css %}
+    {% endblock css %}
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        a {
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Header Section starts here -->
+    <div class="container-fluid px-0">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary font-weight-bold" style="font-size: 1rem;">
+            <a class="navbar-brand bg-black px-3 py-2 rounded" href="/" style="color: white;">
+                <i class="fas fa-hotel text-warning"></i> <b>Vistora</b>
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <!-- Left side links -->
+                <ul class="navbar-nav mr-auto">
+        
+                    {% if user.is_staff %}
+                        <li class="nav-item mx-2"><a class="nav-link text-white" href="/staff/panel">Room Details</a></li>
+                        <li class="nav-item mx-2"><a class="nav-link text-white" href="/parking/reservations">Parking Details</a></li>
+                        <li class="nav-item mx-2"><a class="nav-link text-white" href="/garbage/dashboard">Garbage Monitoring</a></li>
+                        <li class="nav-item mx-2"><a class="nav-link text-white" href="{% url 'ledger:staff_view' %}">Feedback Ledger</a></li>
+        
+                    {% elif user.is_authenticated %}
+                        <li class="nav-item mx-2"><a class="nav-link text-white" href="/user/bookings">Room Bookings</a></li>
+                        <li class="nav-item mx-2"><a class="nav-link text-white" href="/order">Menu</a></li>
+                        <li class="nav-item mx-2"><a class="nav-link text-white" href="/parking/">Parking Spot</a></li>
+                        <li class="nav-item mx-2"><a class="nav-link text-white" href="{% url 'ledger:submit_entry' %}">Submit Feedback</a></li>
+                        <li class="nav-item mx-2"><a class="nav-link text-white" href="{% url 'personalized_guest_experience:personalized_home' %}">Personalized Experience</a></li>
+                    {% endif %}
+        
+                    <!-- Always shown -->
+                    <li class="nav-item mx-2"><a class="nav-link text-white" href="/directions">Directions</a></li>
+                    <li class="nav-item mx-2"><a class="nav-link text-white" href="{% url 'aboutpage' %}">About</a></li>
+                    <li class="nav-item mx-2"><a class="nav-link text-white" href="{% url 'contactpage' %}">Contact</a></li>
+                </ul>
+        
+                <!-- Right side user/authentication buttons -->
+                <ul class="navbar-nav ml-auto align-items-center">
+        
+                    {% if user.is_authenticated %}
+                        <li class="nav-item mx-2">
+                            <a href="/order/view-orders" class="btn btn-info btn-sm mx-1 text-white">View Orders</a>
+                        </li>
+                        <li class="nav-item mx-2">
+                            <a href="/order/cart" id="cart_button" class="btn btn-light btn-sm mx-1" style="color: black;">
+                                My Cart <i class="fa fa-shopping-cart"></i>
+                            </a>
+                        </li>
+                        <li class="nav-item mx-2">
+                            <button class="btn btn-light btn-sm mx-1 text-dark" data-toggle="modal" data-target="#forlogin">
+                                Hello, {{ request.user }}
+                            </button>
+                        </li>
+                        <li class="nav-item mx-2">
+                            <a href="/logout/" class="btn btn-warning btn-sm mx-1 text-white">Logout</a>
+                        </li>
+                    {% else %}
+                        <li class="nav-item mx-2">
+                            <a href="/user/" class="btn btn-warning btn-sm mx-1 font-weight-bold text-white">User Login</a>
+                        </li>
+                        <li class="nav-item mx-2">
+                            <a href="/staff/" class="btn btn-warning btn-sm mx-1 font-weight-bold text-white">Staff Login</a>
+                        </li>
+                    {% endif %}
+        
+                </ul>
+            </div>
+        </nav>
+        
+        
+    </div>
+    <!-- Header Section Ends here -->
+
+    <!-- Display Flash Messages -->
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    {% endfor %}
+
+    <!-- Body Content -->
+    {% block body %}
+    {% endblock body %}
+    
+
+</body>
+
+{% block js %}
+<script src="{% static 'orders/main.js' %}"></script>
+{% endblock js %}
+
+<!-- Chatbot Floating Button -->
+<!-- Floating Chat Icon -->
+<div id="chat-icon" onclick="toggleChat()" style="
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: linear-gradient(135deg, #007bff, #0056b3);
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    cursor: pointer;
+    font-size: 32px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease, background 0.3s ease;
+">
+    💬
+</div>
+
+<!-- Chat Window -->
+<div id="chat-window" style="
+    display: none;
+    flex-direction: column;
+    position: fixed;
+    bottom: 100px;
+    right: 20px;
+    width: 400px;
+    height: 500px;
+    background: #f9f9f9;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+">
+    <div style="
+        background: linear-gradient(135deg, #007bff, #0056b3);
+        color: white;
+        padding: 15px;
+        text-align: center;
+        font-weight: bold;
+        font-size: 18px;
+    ">
+        🤖 AI Chatbot
+    </div>
+
+    <div id="chat-messages" style="
+        flex-grow: 1;
+        padding: 15px;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        background: #ffffff;
+        scroll-behavior: smooth;
+    ">
+    </div>
+
+    <div style="
+        display: flex;
+        border-top: 1px solid #ddd;
+        padding: 10px;
+        background: #f0f0f0;
+    ">
+        <input id="user-input" type="text" placeholder="Type a message..." style="
+            flex-grow: 1;
+            padding: 10px 15px;
+            border: 1px solid #ccc;
+            border-radius: 20px;
+            outline: none;
+            margin-right: 10px;
+        ">
+        <button onclick="sendMessage()" style="
+            padding: 10px 20px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: background 0.3s;
+        ">Send</button>
+    </div>
+</div>
+
+<script>
+    function toggleChat() {
+        const chatWindow = document.getElementById('chat-window');
+        chatWindow.style.display = chatWindow.style.display === 'flex' ? 'none' : 'flex';
+    }
+
+    async function sendMessage() {
+        const userInput = document.getElementById('user-input');
+        const message = userInput.value.trim();
+        if (!message) return;
+
+        appendMessage('You', message, true);
+        userInput.value = '';
+
+        try {
+            const response = await fetch('/chatbot/chat-api/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken')
+                },
+                body: JSON.stringify({ message: message })
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                appendMessage('Bot', data.reply, false);
+            } else {
+                appendMessage('Bot', 'Error: Could not get response.', false);
+            }
+        } catch (error) {
+            console.error('Error communicating with server:', error);
+            appendMessage('Bot', 'Error: Server communication failed.', false);
+        }
+    }
+
+    function appendMessage(sender, text, isUser) {
+        const chatMessages = document.getElementById('chat-messages');
+        const messageElem = document.createElement('div');
+        messageElem.style.maxWidth = '80%';
+        messageElem.style.padding = '10px 15px';
+        messageElem.style.borderRadius = '20px';
+        messageElem.style.background = isUser ? '#007bff' : '#e0e0e0';
+        messageElem.style.color = isUser ? 'white' : '#333';
+        messageElem.style.alignSelf = isUser ? 'flex-end' : 'flex-start';
+        messageElem.style.wordBreak = 'break-word';
+        messageElem.innerHTML = `<b>${sender}:</b> ${text}`;
+        chatMessages.appendChild(messageElem);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+    // Hover animation for chat icon
+    const chatIcon = document.getElementById('chat-icon');
+    chatIcon.addEventListener('mouseenter', () => {
+        chatIcon.style.transform = 'scale(1.1)';
+    });
+    chatIcon.addEventListener('mouseleave', () => {
+        chatIcon.style.transform = 'scale(1)';
+    });
+</script>
+
+</html>

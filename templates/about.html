@@ -1,0 +1,120 @@
+{% extends 'base.html' %}
+{% block title %}About{% endblock title %}
+
+{% block css %}
+<style>
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    background-color: #f9f9f9;
+  }
+
+  .about-section {
+    padding: 80px 20px;
+    text-align: center;
+    background: linear-gradient(to right, #1f4037, #99f2c8);
+    color: white;
+  }
+
+  .about-section h1 {
+    font-size: 48px;
+    margin-bottom: 20px;
+    font-weight: bold;
+  }
+
+  .about-section p {
+    font-size: 18px;
+    line-height: 1.7;
+    max-width: 900px;
+    margin: auto;
+  }
+
+  h2.section-title {
+    text-align: center;
+    margin: 50px 0 30px;
+    font-size: 36px;
+    color: #333;
+  }
+
+  .team-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px;
+    padding-bottom: 60px;
+  }
+
+  .team-card {
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    max-width: 300px;
+    padding: 30px 20px;
+    text-align: center;
+    transition: transform 0.3s ease;
+  }
+
+  .team-card:hover {
+    transform: translateY(-5px);
+  }
+
+  .team-card h2 {
+    font-size: 22px;
+    margin: 10px 0 5px;
+    color: #2c3e50;
+  }
+
+  .team-card h4 {
+    font-size: 16px;
+    color: #888;
+    margin-bottom: 10px;
+  }
+
+  .team-card p {
+    font-size: 14px;
+    color: #555;
+    word-wrap: break-word;
+  }
+
+  @media screen and (max-width: 768px) {
+    .about-section h1 {
+      font-size: 36px;
+    }
+
+    .about-section p {
+      font-size: 16px;
+    }
+
+    .team-card {
+      width: 90%;
+    }
+  }
+</style>
+{% endblock css %}
+
+{% block body %}
+<div class="about-section">
+  <h1>About Us</h1>
+  <p>
+    Vistora is located within walking distance from --- and is the only charming relais in the heart of Paris with private parking on-site and a blooming garden with a panoramic view — a true privilege for our guests.<br><br>
+    Our hotel offers stunning rooms that maintain the timeless style and ambiance of a historic dwelling — the ideal choice for a refined holiday.
+  </p>
+</div>
+
+<h2 class="section-title">Our Team</h2>
+
+<div class="team-container">
+  <div class="team-card">
+    <h2>Gayathiri V</h2>
+    <h4>2020-CE-36</h4>
+    <p><a href="mailto:gayathiri2k4@gmail.com">gayathiri2k4@gmail.com</a></p>
+  </div>
+
+  <div class="team-card">
+    <h2>Sarnish C</h2>
+    <h4>2020-CE-37</h4>
+    <p><a href="mailto:sarnish449@gmail.com">sarnish449@gmail.com</a></p>
+  </div>
+</div>
+
+{% endblock body %}

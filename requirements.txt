@@ -1,0 +1,43 @@
+# Core Django & REST API
+Django>=4.2
+djangorestframework
+django-cors-headers
+python-decouple
+
+# Emotion Detection (no dlib required)
+deepface
+opencv-python
+
+# Sentiment Analysis
+textblob
+nltk
+
+# PDF generation
+xhtml2pdf
+reportlab
+
+# Image handling
+Pillow
+
+# Date/time utilities
+pytz
+
+# Rich text editor
+django-tinymce
+
+# Django Extensions (for tools like shell_plus, models graph)
+django-extensions
+
+# Better admin styling
+django-crispy-forms
+crispy-bootstrap3
+
+# Bootstrap/JS widgets
+django-widget-tweaks
+
+# WebAuthn biometric authentication
+webauthn
+django-webauthn
+
+# HTTP requests utility
+requests

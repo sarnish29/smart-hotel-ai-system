@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block title %}Capture Emotion{% endblock %}
+
+{% block body %}
+    <div class="container mt-5">
+        <h1>Capture Your Emotion</h1>
+
+        <p>Please allow access to your webcam and click "Capture" to record your emotional reaction.</p>
+
+        <!-- Include webcam and capture button -->
+        <div id="webcam-container">
+            <video id="video" width="640" height="480" autoplay></video>
+            <button id="capture-btn" class="btn btn-primary mt-3">Capture Emotion</button>
+        </div>
+
+        <form method="POST" action="{% url 'emotion_engine:capture_emotion' %}">
+            {% csrf_token %}
+            <input type="hidden" id="captured-emotion" name="emotion" value="">
+            <button type="submit" id="submit-btn" class="btn btn-success mt-3" style="display:none;">Submit</button>
+        </form>
+
+        <script>
+            let video = document.getElementById('video');
+            let captureBtn = document.getElementById('capture-btn');
+            let submitBtn = document.getElementById('submit-btn');
+            let capturedEmotion = document.getElementById('captured-emotion');
+
+            // Access the webcam
+            navigator.mediaDevices.getUserMedia({ video: true })
+                .then(function(stream) {
+                    video.srcObject = stream;
+                })
+                .catch(function(err) {
+                    console.log("Error accessing webcam: ", err);
+                });
+
+            // Handle the capture button click
+            captureBtn.addEventListener('click', function() {
+                // Simulate emotion detection (this should call your facial recognition API)
+                let emotion = 'happy';  // This would be dynamically set by your emotion detection system
+                capturedEmotion.value = emotion;
+
+                // Display the submit button
+                submitBtn.style.display = 'inline-block';
+            });
+        </script>
+    </div>
+{% endblock %}

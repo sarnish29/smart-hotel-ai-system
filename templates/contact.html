@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+{% block title %}About{% endblock title %}
+
+{% block css %}
+<style>
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    background-color: #f4f4f9;
+  }
+
+  .about-section {
+    padding: 80px 20px;
+    text-align: center;
+    background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+    color: white;
+  }
+
+  .about-section h1 {
+    font-size: 48px;
+    margin-bottom: 20px;
+    font-weight: bold;
+    letter-spacing: 1px;
+  }
+
+  .about-section h4 {
+    font-size: 20px;
+    line-height: 1.8;
+    color: #ddd;
+    max-width: 800px;
+    margin: auto;
+  }
+
+  .contact-box {
+    background: white;
+    color: #333;
+    padding: 40px;
+    border-radius: 12px;
+    max-width: 600px;
+    margin: 40px auto;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  }
+
+  .contact-box h2 {
+    font-size: 28px;
+    margin-bottom: 20px;
+    color: #2c5364;
+  }
+
+  .contact-box p {
+    font-size: 16px;
+    line-height: 1.6;
+  }
+
+  .contact-box a {
+    color: #2c5364;
+    text-decoration: none;
+    font-weight: bold;
+  }
+
+  .contact-box a:hover {
+    text-decoration: underline;
+  }
+
+  @media screen and (max-width: 768px) {
+    .about-section h1 {
+      font-size: 36px;
+    }
+
+    .about-section h4 {
+      font-size: 18px;
+    }
+  }
+</style>
+{% endblock css %}
+
+{% block body %}
+<div class="about-section">
+  <h1>Contact Us</h1>
+  <h4>
+    Experience the luxury of living in one of the <strong>World's best Smart Hotels</strong>,<br>
+    where comfort meets cutting-edge technology for a seamless experience.
+  </h4>
+</div>
+
+<div class="contact-box">
+  <h2>We're here to help</h2>
+  <p>
+    Have questions, feedback, or need assistance? Don’t hesitate to reach out.
+  </p>
+  <p>
+    📧 Email: <a href="mailto:info@vistora@gmail.com">info@vistora@gmail.com</a>
+  </p>
+</div>
+{% endblock body %}

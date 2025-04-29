@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}{{ room.name }}{% endblock %}
+
+{% block body %}
+<div class="container py-5">
+    <h2 class="fw-bold text-light text-center mb-4" style="font-size: 2.5rem; color: #FFD700;">{{ room.name }}</h2>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="room-detail-image-container">
+                <img src="{{ room.image.url }}" alt="{{ room.name }}" class="img-fluid rounded room-detail-image">
+            </div>
+        </div>
+        <div class="col-md-6">
+            <p class="text-muted mb-4" style="font-size: 1.2rem;">{{ room.description }}</p>
+            <p><strong style="font-size: 1.5rem;">Price: </strong>{{ room.price }} {{ room.currency }}</p>
+            <a href="{% url 'personalized_guest_experience:ai_recommendations' %}" class="btn btn-outline-info mt-3" style="border-radius: 30px; padding: 10px 20px;">Back to Recommendations</a>
+        </div>
+    </div>
+</div>
+
+<style>
+    .room-detail-image-container {
+        position: relative;
+        overflow: hidden;
+        width: 100%;
+        height: 400px; /* Adjust the height of the image container */
+    }
+
+    .room-detail-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover; /* Ensure image covers the container */
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .room-detail-image:hover {
+        transform: scale(1.15) rotateY(5deg) rotateX(5deg); /* Increased scale for a larger effect */
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    }
+
+    .btn-outline-info {
+        border-color: #00bfff;
+        color: #00bfff;
+    }
+
+    .btn-outline-info:hover {
+        background-color: #00bfff;
+        color: #fff;
+        border-color: #00bfff;
+    }
+
+    .card-body {
+        padding: 1.25rem;
+    }
+
+    body {
+        background: linear-gradient(135deg, rgba(255, 140, 0, 0.2), rgba(0, 204, 255, 0.3)); /* Gradient effect */
+    }
+</style>
+
+{% endblock %}

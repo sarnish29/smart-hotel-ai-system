@@ -1,0 +1,22 @@
+<!-- ledger_dashboard.html -->
+
+{% extends 'base.html' %}
+
+{% block body %}
+<div class="container">
+    <h2>Your Feedback / Complaints</h2>
+    
+    {% if entries %}
+        <ul>
+            {% for entry in entries %}
+                <li>
+                    <strong>{{ entry.entry_type|capfirst }}</strong> - {{ entry.timestamp }}<br>
+                    <p>{{ entry.message }}</p>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No feedback or complaints submitted yet.</p>
+    {% endif %}
+</div>
+{% endblock %}

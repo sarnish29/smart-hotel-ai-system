@@ -1,0 +1,201 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}AI Recommendations{% endblock %}
+
+{% block body %}
+<div class="container-fluid d-flex justify-content-center align-items-center" style="min-height: 100vh; background: linear-gradient(135deg, rgba(0, 204, 255, 0.1), rgba(255, 140, 0, 0.1));">
+    <div class="w-100">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold text-center mb-4" style="font-size: 2.5rem; color: #FFD700;">Recommended Rooms Just for You</h2>
+            <p class="text-muted mb-5" style="font-size: 1.2rem;">Based on your preferences and the time of day.</p>
+        </div>
+
+        <div class="row g-4 justify-content-center">
+            {% for room in page_obj %}
+            <div class="col-md-6 col-lg-4">
+                <div class="card shadow-lg border-0 rounded-4 h-100 card-vibrant">
+                    {% if room.image %}
+                    <div class="card-img-container">
+                        <img src="{% static 'images/rooms/'|add:room.image.name %}" 
+                        alt="{{ room.name }}" 
+                        class="card-img-top rounded-top room-image"
+                        onerror="this.style.display='none';">
+                    </div>
+                    {% endif %}
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title text-white fw-bold" style="font-size: 1.5rem;">{{ room.name }}</h5>
+                        <p class="card-text text-light mb-4" style="font-size: 1rem;">{{ room.description }}</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="badge bg-warning p-2 text-dark">{{ room.price }} {{ room.currency }}</span>
+                            <a href="{% url 'personalized_guest_experience:room_detail' room_slug=room.slug %}" class="btn btn-outline-light mt-3">View Room</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Pagination Controls -->
+        <div class="d-flex justify-content-center mt-4 w-100">
+            <nav>
+                <ul class="pagination">
+                    <li class="page-item {% if not page_obj.has_previous %}disabled{% endif %}">
+                        <a class="page-link" href="?page=1" aria-label="First">
+                            <span aria-hidden="true">&laquo;&laquo;</span>
+                        </a>
+                    </li>
+                    <li class="page-item {% if not page_obj.has_previous %}disabled{% endif %}">
+                        <a class="page-link" href="{% if page_obj.has_previous %}?page={{ page_obj.previous_page_number }}{% else %}#{% endif %}" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <li class="page-item {% if not page_obj.has_next %}disabled{% endif %}">
+                        <a class="page-link" href="{% if page_obj.has_next %}?page={{ page_obj.next_page_number }}{% else %}#{% endif %}" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                    <li class="page-item {% if not page_obj.has_next %}disabled{% endif %}">
+                        <a class="page-link" href="{% if page_obj.has_next %}?page={{ page_obj.paginator.num_pages }}{% else %}#{% endif %}" aria-label="Last">
+                            <span aria-hidden="true">&raquo;&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+<style>
+        h2 {
+        font-size: 2.5rem; /* Adjusted for prominence */
+        font-weight: bold;
+        color: #FFD700; /* Rich golden color */
+        text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+        margin-bottom: 2rem;
+        letter-spacing: 1px; /* Slight spacing for readability */
+        text-transform: uppercase; /* Makes the title stand out */
+        text-align: center; /* Centers the title */
+    }
+
+    /* Emphasized Span Inside Heading */
+    h2 span {
+        color: #ff6600; /* Complementary vibrant color for emphasis */
+        font-size: 2.8rem; /* Slightly larger for focus */
+    }
+    /* Container and Page Background */
+    .container-fluid {
+        padding: 0;
+        background: linear-gradient(135deg, rgba(0, 204, 255, 0.1), rgba(255, 140, 0, 0.1));
+    }
+
+    /* Card Styles */
+    .card-vibrant {
+        background: linear-gradient(145deg, #ff6600, #ff9900);
+        border: none;
+        box-shadow: 0 20px 50px rgba(255, 140, 0, 0.5);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        overflow: hidden;
+    }
+
+    /* Card Hover Effect */
+    .card-vibrant:hover {
+        transform: scale(1.05);
+        box-shadow: 0 25px 70px rgba(255, 140, 0, 0.7);
+    }
+
+    /* Card Image Container */
+    .card-img-container {
+        position: relative;
+    }
+
+    /* Card Image Styles */
+    .room-image {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        object-fit: cover;
+        height: 200px;
+        border-radius: 0.25rem;
+    }
+
+    /* Card Image Hover Effect */
+    .room-image:hover {
+        transform: rotateY(10deg) rotateX(10deg);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Card Title */
+    .card-title {
+        font-size: 1.6rem;
+        color: #ffffff;
+    }
+
+    /* Card Body */
+    .card-body {
+        padding: 1.25rem;
+    }
+
+    /* Badge Style */
+    .badge {
+        font-size: 1.2rem;
+        font-weight: bold;
+        background-color: #ffcc00;
+        color: #fff;
+    }
+
+    /* Button Styles */
+    .btn-outline-light {
+        border-color: #ffffff;
+        color: #ffffff;
+    }
+
+    .btn-outline-light:hover {
+        background-color: #ffffff;
+        color: #ff6600;
+        border-color: #ff6600;
+    }
+
+    /* Pagination Styles */
+    .pagination {
+        display: flex;
+        justify-content: center;
+        padding: 1rem;
+    }
+
+    .page-item .page-link {
+        color: #ff6600;
+        font-weight: bold;
+        border: 1px solid #ff6600;
+        transition: background-color 0.3s ease;
+    }
+
+    .page-item .page-link:hover {
+        background-color: #ff6600;
+        color: white;
+    }
+
+    .page-item.disabled .page-link {
+        color: #ddd;
+        border-color: #ddd;
+    }
+
+    /* Text Styles */
+    .text-muted {
+        font-size: 1.1rem;
+        color: #b0bec5;
+    }
+
+    /* Center Content */
+    .w-100 {
+        width: 100%;
+    }
+
+    /* Heading Styles */
+    .fw-bold {
+        font-weight: 700;
+    }
+
+    .text-light {
+        color: #f8f9fa;
+    }
+</style>
+
+{% endblock %}

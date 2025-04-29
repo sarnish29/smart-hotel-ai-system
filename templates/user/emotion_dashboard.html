@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block title %}Your Emotional Dashboard{% endblock %}
+
+{% block body %}
+<div class="container py-5">
+    <div class="card border-0 shadow rounded-4 p-5 bg-white">
+        <h1 class="mb-4 text-center text-dark fw-bold" style="font-size: 2.5rem;">Welcome, {{ user.username }}</h1>
+
+        <section class="mb-5">
+            <h2 class="h5 text-muted mb-3">Your Emotional Trends</h2>
+            <ul class="list-group list-group-flush">
+                {% for emotion in emotions %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                        <span class="text-secondary">{{ emotion.timestamp }}</span>
+                        <span class="badge bg-primary bg-opacity-75">{{ emotion.emotion }}</span>
+                    </li>
+                {% endfor %}
+            </ul>
+        </section>
+
+        <section class="mb-5">
+            <h3 class="h5 text-muted mb-3">Emotion Breakdown</h3>
+            <ul class="list-group list-group-flush">
+                {% for emotion, count in emotion_counts %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                        <span class="text-capitalize">{{ emotion }}</span>
+                        <span class="badge bg-success bg-opacity-75">{{ count }}</span>
+                    </li>
+                {% endfor %}
+            </ul>
+        </section>
+
+        <section class="mb-5">
+            <h3 class="h5 text-muted mb-3">Latest Detected Emotion</h3>
+            {% if latest_emotion %}
+                <div class="alert alert-primary border-0">
+                    Your latest emotion: <strong>{{ latest_emotion.emotion }}</strong>
+                </div>
+            {% else %}
+                <div class="alert alert-secondary border-0">
+                    No emotion detected yet.
+                </div>
+            {% endif %}
+        </section>
+
+        <section class="mb-5">
+            <h3 class="h5 text-muted mb-3">Suggestion for You</h3>
+            <div class="alert alert-light border-start border-4 border-success shadow-sm">
+                {{ suggestion }}
+            </div>
+        </section>
+
+        <div class="text-center">
+            <a href="{% url 'emotion_engine:capture_emotion' %}" class="btn btn-lg btn-outline-primary rounded-pill px-5">
+                🎥 Capture Your Emotion
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

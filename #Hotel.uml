@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>DjangoModelDependency</ID>
+  <OriginalElement>#Hotel</OriginalElement>
+  <nodes>
+    <node x="1592.3150635528284" y="350.077201854263">orders.models.Category</node>
+    <node x="1029.386854427388" y="572.4590437430642">object</node>
+    <node x="741.9314691601347" y="567.6607034333422">orders.models.MexicanCuisine</node>
+    <node x="1041.7833351130323" y="681.547241965276">orders.models.UserOrder</node>
+    <node x="14.686894273293092" y="384.2842604574193">booking.models.Rooms</node>
+    <node x="918.1897444342428" y="399.4453963381172">django.db.models.base.Model</node>
+    <node x="278.5896822024063" y="589.4406740538234">booking.models.Reservation</node>
+    <node x="1437.7806817016144" y="585.0273815787307">orders.models.FrenchCuisine</node>
+    <node x="490.3560361403053" y="-14.149603030730418">django.contrib.auth.models.Permission</node>
+    <node x="1311.7075354099825" y="364.85834130099096">orders.models.TurkishCuisine</node>
+    <node x="12.49535466931735" y="675.1139112317098">booking.models.Hotels</node>
+    <node x="833.9600154672144" y="157.64695011018426">django.contrib.contenttypes.models.ContentType</node>
+    <node x="1164.1259117833915" y="523.0570320110231">orders.models.ItalianCuisine</node>
+    <node x="2171.3275934130033" y="183.0400260323384">orders.models.PakistaniCuisine</node>
+    <node x="144.24810299992916" y="64.87006425119476">django.contrib.auth.models.User</node>
+    <node x="1947.588051614505" y="353.6112551833496">api.models.Readings</node>
+    <node x="1744.394807473655" y="136.65864623824118">orders.models.SavedCarts</node>
+    <node x="1243.2623230810498" y="62.01494044349498">parking_zones.models.Parking_Zone</node>
+    <node x="513.9624036051614" y="245.3059461833032">parking_zones.models.Reservation</node>
+    <node x="-173.0294392619478" y="181.839805001885">django.contrib.auth.models.Group</node>
+    <node x="267.406057834472" y="397.1128582654811">api.models.Dustbins</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="django.contrib.auth.models.Permission" target="django.contrib.contenttypes.models.ContentType" relationship="ForeignKey">
+      <point x="141.5" y="-23.33545652577459" />
+      <point x="1008.4600154672144" y="44.51494044349499" />
+      <point x="0.0" y="-71.0" />
+    </edge>
+    <edge source="booking.models.Reservation" target="django.contrib.auth.models.User" relationship="ForeignKey">
+      <point x="3.1779759367367433E-4" y="-81.99967405382341" />
+      <point x="387.09000000000003" y="549.613" />
+      <point x="488.0" y="549.613" />
+      <point x="488.0" y="205.87" />
+      <point x="142.99989700007086" y="14.999935748805239" />
+    </edge>
+    <edge source="parking_zones.models.Reservation" target="django.db.models.base.Model" relationship="OneToOne">
+      <point x="126.99959639483865" y="5.381669680559753E-5" />
+      <point x="804.0" y="371.30600000000004" />
+      <point x="804.0" y="499.0" />
+      <point x="1032.69" y="499.0" />
+      <point x="2.5556575724294817E-4" y="26.999603661882816" />
+    </edge>
+    <edge source="django.contrib.auth.models.Group" target="django.contrib.auth.models.Permission" relationship="ManyToMany">
+      <point x="4.3926194780397054E-4" y="-70.999805001885" />
+      <point x="-46.028999999999996" y="47.370000000000005" />
+      <point x="461.0" y="47.370000000000005" />
+      <point x="461.0" y="67.85" />
+      <point x="-141.50003614030533" y="-3.9696926958754375E-4" />
+    </edge>
+    <edge source="parking_zones.models.Reservation" target="django.contrib.auth.models.User" relationship="ForeignKey">
+      <point x="-127.00040360516135" y="5.381669680559753E-5" />
+      <point x="488.0" y="371.30600000000004" />
+      <point x="488.0" y="205.87" />
+      <point x="142.99989700007086" y="14.999935748805239" />
+    </edge>
+    <edge source="orders.models.UserOrder" target="django.db.models.base.Model" relationship="OneToOne">
+      <point x="-3.35113032292611E-4" y="81.99975803472398" />
+      <point x="1139.783" y="884.0" />
+      <point x="1011.887" y="884.0" />
+      <point x="1011.887" y="499.0" />
+      <point x="1032.69" y="499.0" />
+      <point x="2.5556575724294817E-4" y="26.999603661882816" />
+    </edge>
+    <edge source="orders.models.PakistaniCuisine" target="django.db.models.base.Model" relationship="OneToOne">
+      <point x="4.0658699640516716E-4" y="48.99997396766159" />
+      <point x="2286.828" y="325.0" />
+      <point x="804.0" y="325.0" />
+      <point x="804.0" y="499.0" />
+      <point x="1032.69" y="499.0" />
+      <point x="2.5556575724294817E-4" y="26.999603661882816" />
+    </edge>
+    <edge source="booking.models.Rooms" target="django.db.models.base.Model" relationship="OneToOne">
+      <point x="94.50010572670692" y="35.328739542580706" />
+      <point x="804.0" y="534.613" />
+      <point x="804.0" y="499.0" />
+      <point x="1032.69" y="499.0" />
+      <point x="2.5556575724294817E-4" y="26.999603661882816" />
+    </edge>
+    <edge source="booking.models.Reservation" target="booking.models.Rooms" relationship="ForeignKey">
+      <point x="-108.5" y="-64.6564135964041" />
+      <point x="94.5" y="107.5" />
+    </edge>
+    <edge source="django.db.models.base.Model" target="object" relationship="OneToOne">
+      <point x="33.697109993145204" y="27.0" />
+      <point x="0.0" y="-14.5" />
+    </edge>
+    <edge source="django.contrib.contenttypes.models.ContentType" target="django.db.models.base.Model" relationship="OneToOne">
+      <point x="-1.5467214325326495E-5" y="71.00004988981576" />
+      <point x="1008.46" y="325.0" />
+      <point x="804.0" y="325.0" />
+      <point x="804.0" y="499.0" />
+      <point x="1032.69" y="499.0" />
+      <point x="2.5556575724294817E-4" y="26.999603661882816" />
+    </edge>
+    <edge source="orders.models.MexicanCuisine" target="django.db.models.base.Model" relationship="OneToOne">
+      <point x="-4.6916013468489837E-4" y="-48.99970343334218" />
+      <point x="855.431" y="499.0" />
+      <point x="1032.69" y="499.0" />
+      <point x="2.5556575724294817E-4" y="26.999603661882816" />
+    </edge>
+    <edge source="orders.models.FrenchCuisine" target="django.db.models.base.Model" relationship="OneToOne">
+      <point x="3.182983855367638E-4" y="-49.000381578730696" />
+      <point x="1546.281" y="499.0" />
+      <point x="1032.69" y="499.0" />
+      <point x="2.5556575724294817E-4" y="26.999603661882816" />
+    </edge>
+    <edge source="django.contrib.auth.models.Permission" target="django.db.models.base.Model" relationship="OneToOne">
+      <point x="141.49996385969467" y="-3.9696926958754375E-4" />
+      <point x="804.0" y="67.85" />
+      <point x="804.0" y="499.0" />
+      <point x="1032.69" y="499.0" />
+      <point x="2.5556575724294817E-4" y="26.999603661882816" />
+    </edge>
+    <edge source="parking_zones.models.Parking_Zone" target="django.db.models.base.Model" relationship="OneToOne">
+      <point x="-3.2308104982803343E-4" y="115.00005955650502" />
+      <point x="1375.762" y="325.0" />
+      <point x="804.0" y="325.0" />
+      <point x="804.0" y="499.0" />
+      <point x="1032.69" y="499.0" />
+      <point x="2.5556575724294817E-4" y="26.999603661882816" />
+    </edge>
+    <edge source="django.contrib.auth.models.Group" target="django.db.models.base.Model" relationship="OneToOne">
+      <point x="4.3926194780397054E-4" y="71.000194998115" />
+      <point x="-46.028999999999996" y="884.0" />
+      <point x="1011.887" y="884.0" />
+      <point x="1011.887" y="499.0" />
+      <point x="1032.69" y="499.0" />
+      <point x="2.5556575724294817E-4" y="26.999603661882816" />
+    </edge>
+    <edge source="booking.models.Rooms" target="booking.models.Hotels" relationship="ForeignKey">
+      <point x="-4.691539603975741" y="115.0" />
+      <point x="0.0" y="-93.0" />
+    </edge>
+    <edge source="django.contrib.auth.models.User" target="django.contrib.auth.models.Permission" relationship="ManyToMany">
+      <point x="142.99989700007086" y="-6.425119476194396E-5" />
+      <point x="461.0" y="190.87" />
+      <point x="461.0" y="67.85" />
+      <point x="-141.50003614030533" y="-3.9696926958754375E-4" />
+    </edge>
+    <edge source="api.models.Readings" target="django.db.models.base.Model" relationship="OneToOne">
+      <point x="-5.1614505082397955E-5" y="59.999744816650406" />
+      <point x="2038.088" y="499.0" />
+      <point x="1032.69" y="499.0" />
+      <point x="2.5556575724294817E-4" y="26.999603661882816" />
+    </edge>
+    <edge source="orders.models.SavedCarts" target="django.db.models.base.Model" relationship="OneToOne">
+      <point x="1.9252634501754073E-4" y="49.00035376175883" />
+      <point x="1844.895" y="325.0" />
+      <point x="804.0" y="325.0" />
+      <point x="804.0" y="499.0" />
+      <point x="1032.69" y="499.0" />
+      <point x="2.5556575724294817E-4" y="26.999603661882816" />
+    </edge>
+    <edge source="orders.models.Category" target="django.db.models.base.Model" relationship="OneToOne">
+      <point x="-6.355282835102116E-5" y="-60.000201854263025" />
+      <point x="1690.315" y="325.0" />
+      <point x="804.0" y="325.0" />
+      <point x="804.0" y="499.0" />
+      <point x="1032.69" y="499.0" />
+      <point x="2.5556575724294817E-4" y="26.999603661882816" />
+    </edge>
+    <edge source="booking.models.Reservation" target="django.db.models.base.Model" relationship="OneToOne">
+      <point x="3.1779759367367433E-4" y="82.00032594617664" />
+      <point x="387.09000000000003" y="884.0" />
+      <point x="1011.887" y="884.0" />
+      <point x="1011.887" y="499.0" />
+      <point x="1032.69" y="499.0" />
+      <point x="2.5556575724294817E-4" y="26.999603661882816" />
+    </edge>
+    <edge source="django.contrib.auth.models.User" target="django.contrib.auth.models.Group" relationship="ManyToMany">
+      <point x="-143.0" y="61.969740750690235" />
+      <point x="127.0" y="0.0" />
+    </edge>
+    <edge source="parking_zones.models.Reservation" target="parking_zones.models.Parking_Zone" relationship="ForeignKey">
+      <point x="-127.0" y="-14.999946183303194" />
+      <point x="-190.5294392619478" y="356.30600000000004" />
+      <point x="-190.5294392619478" y="-31.649603030730418" />
+      <point x="1375.7623230810498" y="-31.649603030730418" />
+      <point x="0.0" y="-115.0" />
+    </edge>
+    <edge source="api.models.Dustbins" target="django.db.models.base.Model" relationship="OneToOne">
+      <point x="88.99994216552801" y="57.69314173451886" />
+      <point x="804.0" y="514.806" />
+      <point x="804.0" y="499.0" />
+      <point x="1032.69" y="499.0" />
+      <point x="2.5556575724294817E-4" y="26.999603661882816" />
+    </edge>
+    <edge source="orders.models.TurkishCuisine" target="django.db.models.base.Model" relationship="OneToOne">
+      <point x="4.645900176001305E-4" y="48.999658699009046" />
+      <point x="1421.708" y="499.0" />
+      <point x="1032.69" y="499.0" />
+      <point x="2.5556575724294817E-4" y="26.999603661882816" />
+    </edge>
+    <edge source="orders.models.ItalianCuisine" target="django.db.models.base.Model" relationship="OneToOne">
+      <point x="8.821660833291389E-5" y="-49.00003201102311" />
+      <point x="1270.626" y="499.0" />
+      <point x="1032.69" y="499.0" />
+      <point x="2.5556575724294817E-4" y="26.999603661882816" />
+    </edge>
+    <edge source="booking.models.Hotels" target="django.db.models.base.Model" relationship="OneToOne">
+      <point x="-3.54669317346179E-4" y="93.0000887682902" />
+      <point x="104.495" y="884.0" />
+      <point x="1011.887" y="884.0" />
+      <point x="1011.887" y="499.0" />
+      <point x="1032.69" y="499.0" />
+      <point x="2.5556575724294817E-4" y="26.999603661882816" />
+    </edge>
+  </edges>
+  <settings layout="Orthogonal Groups" zoom="0.5172149961744453" showDependencies="false" x="1116.0" y="436.0" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Fields</Category>
+  </Categories>
+</Diagram>
+

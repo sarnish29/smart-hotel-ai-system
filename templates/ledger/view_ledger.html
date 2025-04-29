@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block title %}Ledger Entries{% endblock %}  
+
+{% block body %}
+<div class="container mt-5">
+    <h2 class="text-center mb-4" style="font-weight: bold; color: #212529;">🔗 Immutable Ledger - Feedback & Complaints</h2>
+
+    {% if tampering_alert %}
+    <div class="alert alert-danger text-center" role="alert" style="font-weight: bold; font-size: 18px;">
+        ⚠️ Ledger Integrity Broken! Entries may have been tampered.
+    </div>
+    {% endif %}
+
+    <div class="table-responsive shadow-lg p-4 mb-5 bg-light rounded" style="border: 1px solid #dee2e6;">
+        <table class="table table-striped align-middle text-center">
+            <thead style="background-color: #0d6efd; color: white;">
+                <tr>
+                    <th>#</th>
+                    <th>User</th>
+                    <th>Type</th>
+                    <th>Message</th>
+                    <th>Timestamp</th>
+                    <th>Hash</th>
+                    <th>Previous Hash</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for entry in entries %}
+                <tr style="background: white;">
+                    <td style="font-weight: bold;">{{ forloop.counter }}</td>
+                    <td>{{ entry.user.username }}</td>
+                    <td>
+                        {% if entry.entry_type == 'complaint' %}
+                            <span class="badge rounded-pill bg-danger p-2" style="font-size: 14px;">Complaint</span>
+                        {% else %}
+                            <span class="badge rounded-pill bg-success p-2" style="font-size: 14px;">Feedback</span>
+                        {% endif %}
+                    </td>
+                    <td class="text-start" style="max-width: 250px; overflow-wrap: break-word;">{{ entry.message }}</td>
+                    <td>{{ entry.timestamp|date:"d M Y, H:i" }}</td>
+                    <td><code style="font-size: 13px;">{{ entry.hash|slice:":10" }}...</code></td>
+                    <td><code style="font-size: 13px;">{{ entry.previous_hash|slice:":10" }}...</code></td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="7" class="text-center text-muted" style="padding: 30px;">No entries found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="text-center mt-4">
+        <a href="{% url 'dashboard' %}" class="btn btn-primary btn-lg" style="padding: 10px 30px; border-radius: 10px;">⬅️ Back to Dashboard</a>
+    </div>    
+</div>
+{% endblock %}

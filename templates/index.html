@@ -1,0 +1,220 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load app_tags %}
+
+{% block title %}Vistora{% endblock title %}
+
+{% block body %}
+<!--Booking Section starts here-->
+<section>
+    <div class="container-fluid py-5 px-5">
+        <form action="" method="POST">
+            {% csrf_token %}
+            <div class="row justify-content-center py-5 bg-light">
+                <div class="col-lg-4">
+                    <label for="">Location</label>
+                    <select class="form-control" name="search_location" id="roomstatus">
+                        <option>Location</option>
+                        {% for each_location, each_hotel_id in all_location %}
+                            <option value="{{ each_hotel_id }}">{{ each_location }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                
+                <div class="col-lg-2">
+                    <label for="">Check in</label>
+                    <input class="form-control" type="date" name="cin" min="{% todays_date %}" max="{% max_date %}" required>
+                </div>
+                
+                <div class="col-lg-2">
+                    <label for="">Check Out</label>
+                    <input class="form-control" type="date" name="cout" min="{% tommorow %}" max="{% max_date %}" required>
+                </div>
+                
+                <div class="col-lg-2">
+                    <label for="">Person</label>
+                    <input class="form-control" type="number" name="capacity" required>
+                </div>
+                
+                <div class="col-lg-2">
+                    <input type="submit" value="Check Availabilty" class="form-control btn btn-primary my-4" style="position: relative; top: 7px;">
+                </div>
+
+                {% if rooms %}
+                    <p class="text-center text-success">Rooms Available</p>
+                {% endif %}
+            </div>
+        </form>
+    </div>
+</section>
+<!--Booking Section ends here-->
+
+<!--Fetched results appear here-->
+<div class="container-fluid px-0 mx-auto">
+    {% if rooms %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Type</th>
+                    <th>Location</th>
+                    <th>Person</th>
+                    <th>Price</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for r in rooms %}
+                    <tr>
+                        <td>{{ r.get_room_type_display }}</td>
+                        <td>{{ r.hotel.location }}</td>
+                        <td>{{ r.capacity }}</td>
+                        <td>{{ r.price }}</td>
+                        <td>
+                            <a href="/user/book-room?roomid={{ r.id }}">
+                                <button class="btn btn-warning">Book Now</button>
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+</div>
+<!--Fetched results ends here-->
+
+<h3 class="text-center text-dark">Room Types</h3>
+
+<!--Room tables starts here-->
+<div class="container-fluid px-0" style="border:1px solid red">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th class="text-center">Information</th>
+                <th class="text-center">View</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="text-center">
+                    <h1>Triple Room</h1>
+                    <p>The Triple Rooms are spacious and ideal for small families or groups.<br>
+                        People capacity: 3<br>
+                        1 double bed + 1 single bed<br>
+                        1 bathroom<br>
+                        Perfect for comfort and convenience.
+                    </p>
+                </td>
+                <td class="text-center">
+                    <img src="{% static 'images/triple.png' %}" alt="Triple Room" class="img-fluid pt-4" style="height: 250px; object-fit: cover;">
+                </td>
+            </tr>
+            
+
+            <tr>
+                <td class="text-center">
+                    <h1>Deluxe Room</h1>
+                    <p>The Deluxe Rooms overlook the garden, have a big living room.<br>
+                        People capacity: 3<br>
+                        1 double bed<br>
+                        1 bathroom
+                    </p>
+                </td>
+                <td class="text-center">
+                    <img src="{% static 'images/deluxe.png' %}" alt="Deluxe Room" class="img-fluid pt-4" style="height: 250px; object-fit: cover;">
+                </td>
+            </tr>
+
+            <tr>
+                <td class="text-center">
+                    <h1>Premium Suite</h1>
+                    <p>These rooms have a garden view, are furnished classically, and are ideal for couples.<br>
+                        People capacity: 2<br>
+                        1 double bed<br>
+                        1 bathroom
+                    </p>
+                </td>
+                <td class="text-center">
+                    <img src="{% static 'images/premiumsuite.png' %}" alt="Premium Suite Room" class="img-fluid pt-4" style="height: 250px; object-fit: cover;">
+                </td>
+            </tr>
+
+            <tr>
+                <td class="text-center">
+                    <h1>Presidential Suite</h1>
+                    <p>The Presidential Suites have a living room with comfortable armchairs.<br>
+                        You can book rooms with a garden or main road view.<br>
+                        People capacity: 3<br>
+                        1 double bed<br>
+                        1 bathroom
+                    </p>
+                </td>
+                <td class="text-center">
+                    <img src="{% static 'images/presedential.png' %}" alt="Presidential Suite Room" class="img-fluid pt-4" style="height: 250px; object-fit: cover;">
+                </td>
+            </tr>
+
+            <tr>
+                <td class="text-center">
+                    <h1>Ocean View Suite</h1>
+                    <p>The Ocean View Suites provide breathtaking sea views and premium comfort.<br>
+                        People capacity: 4<br>
+                        2 queen-size beds<br>
+                        2 bathrooms<br>
+                        A perfect blend of luxury and seaside charm.
+                    </p>
+                </td>
+                <td class="text-center">
+                    <img src="{% static 'images/rooms/ocean-view-suite.jpg' %}" alt="Ocean View Suite Room" class="img-fluid pt-4" style="height: 250px; object-fit: cover;">
+                </td>
+            </tr>
+
+            <tr>
+                <td class="text-center">
+                    <h1>Garden Deluxe</h1>
+                    <p>The Garden Deluxe Rooms open to beautiful garden landscapes and offer extra space.<br>
+                        People capacity: 3<br>
+                        1 double bed + 1 single bed<br>
+                        1 bathroom<br>
+                        Perfect for nature lovers seeking comfort.
+                    </p>
+                </td>
+                <td class="text-center">
+                    <img src="{% static 'images/rooms/garden_deluxe.png' %}" alt="Garden Deluxe Room" class="img-fluid pt-4" style="height: 250px; object-fit: cover;">
+                </td>
+            </tr>
+
+            <tr>
+                <td class="text-center">
+                    <h1>Yoga Wellness Room</h1>
+                    <p>The Yoga Wellness Rooms are designed for peace, relaxation, and rejuvenation.<br>
+                        People capacity: 2<br>
+                        1 queen-size bed<br>
+                        1 bathroom<br>
+                        Ideal for a mindful and serene retreat.
+                    </p>
+                </td>
+                <td class="text-center">
+                    <img src="{% static 'images/rooms/yoga-wellness-villa.png' %}" alt="Yoga Wellness Room" class="img-fluid pt-4" style="height: 250px; object-fit: cover;">
+                </td>
+            </tr>
+
+            <tr>
+                <td class="text-center">
+                    <h1>Sunset Penthouse</h1>
+                    <p>The Sunset Penthouse offers stunning sunset views and luxurious amenities.<br>
+                        People capacity: 4<br>
+                        1 king-size bed + 1 sofa bed<br>
+                        2 bathrooms<br>
+                        Experience ultimate relaxation and elegance.
+                    </p>
+                </td>
+                <td class="text-center">
+                    <img src="{% static 'images/rooms/sunset-penthouse.png' %}" alt="Sunset Penthouse Room" class="img-fluid pt-4" style="height: 250px; object-fit: cover;">
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<!--Room tables ends here-->
+
+{% endblock body %}

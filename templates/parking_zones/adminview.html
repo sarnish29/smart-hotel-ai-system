@@ -1,0 +1,288 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{#{% block css %}#}
+{#<style>#}
+{#    .progress {#}
+{#        width: 150px;#}
+{#        height: 150px;#}
+{#        background: none;#}
+{#        position: relative;#}
+{#    }#}
+{##}
+{#    .progress::after {#}
+{#        content: "";#}
+{#        width: 100%;#}
+{#        height: 100%;#}
+{#        border-radius: 50%;#}
+{#        border: 6px solid #eee;#}
+{#        position: absolute;#}
+{#        top: 0;#}
+{#        left: 0;#}
+{#    }#}
+{##}
+{#    .progress>span {#}
+{#        width: 50%;#}
+{#        height: 100%;#}
+{#        overflow: hidden;#}
+{#        position: absolute;#}
+{#        top: 0;#}
+{#        z-index: 1;#}
+{#    }#}
+{##}
+{#    .progress .progress-left {#}
+{#        left: 0;#}
+{#    }#}
+{##}
+{#    .progress .progress-bar {#}
+{#        width: 100%;#}
+{#        height: 100%;#}
+{#        background: none;#}
+{#        border-width: 6px;#}
+{#        border-style: solid;#}
+{#        position: absolute;#}
+{#        top: 0;#}
+{#    }#}
+{##}
+{#    .progress .progress-left .progress-bar {#}
+{#        left: 100%;#}
+{#        border-top-right-radius: 80px;#}
+{#        border-bottom-right-radius: 80px;#}
+{#        border-left: 0;#}
+{#        -webkit-transform-origin: center left;#}
+{#        transform-origin: center left;#}
+{#    }#}
+{##}
+{#    .progress .progress-right {#}
+{#        right: 0;#}
+{#    }#}
+{##}
+{#    .progress .progress-right .progress-bar {#}
+{#        left: -100%;#}
+{#        border-top-left-radius: 80px;#}
+{#        border-bottom-left-radius: 80px;#}
+{#        border-right: 0;#}
+{#        -webkit-transform-origin: center right;#}
+{#        transform-origin: center right;#}
+{#    }#}
+{##}
+{#    .progress .progress-value {#}
+{#        position: absolute;#}
+{#        top: 0;#}
+{#        left: 0;#}
+{#    }#}
+{#    /*#}
+{#*#}
+{#* ==========================================#}
+{#* FOR DEMO PURPOSE#}
+{#* ==========================================#}
+{#*#}
+{#*/#}
+{##}
+{#    body {#}
+{#        min-height: 100vh;#}
+{#    }#}
+{##}
+{#    .rounded-lg {#}
+{#        border-radius: 1rem;#}
+{#    }#}
+{##}
+{#</style>#}
+{#{% endblock css %}#}
+{% block body %}
+{#<section class="my-5 ">#}
+{#    {%load app_tags%}#}
+{#    <h2 class="text-center text-primary">Parking Spot Stats {{ all_parking_zones.sum }}</h2>#}
+{#    <div class="container-fluid px-5 py-5 border">#}
+{##}
+{#        {% for parking_zones in all_parking_zones %}#}
+{#        <div class="row">#}
+{##}
+{#            <div class="col-xl-3 col-lg-6 col-sm-12 mb-3 ">#}
+{#                <div class="bg-white rounded-lg p-5 shadow">#}
+{#                    <h2 class="h6 font-weight-bold text-center mb-4">Total Slots</h2>#}
+{##}
+{#                    <!-- Progress bar 1 -->#}
+{##}
+{#                    <div class="progress mx-auto" data-value={{ parking_zones.num_of_slots|percentage:parking_zones.num_of_slots}}>#}
+{#                        <span class="progress-left">#}
+{#                                    <span class="progress-bar border-primary"></span>#}
+{#                        </span>#}
+{#                        <span class="progress-right">#}
+{#                                    <span class="progress-bar border-primary"></span>#}
+{#                        </span>#}
+{#                        <div class="progress-value w-100 h-100 rounded-circle d-flex align-items-center justify-content-center">#}
+{#                            <div class="h2 font-weight-bold">{{ parking_zones.num_of_slots}}</div>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                    <!-- END -->#}
+{##}
+{##}
+{#                </div>#}
+{#            </div>#}
+{##}
+{#            <div class="col-xl-3 col-lg-6 col-sm-12 mb-3">#}
+{#                <div class="bg-white rounded-lg p-5 shadow">#}
+{#                    <h2 class="h6 font-weight-bold text-center mb-4">Available Spots</h2>#}
+{##}
+{#                    <!-- Progress bar 2 -->#}
+{#                    <div class="progress mx-auto" data-value={{ parking_zones.vacant_slots|percentage:parking_zones.num_of_slots}}>#}
+{#                        <span class="progress-left">#}
+{#                                    <span class="progress-bar border-success"></span>#}
+{#                        </span>#}
+{#                        <span class="progress-right">#}
+{#                                    <span class="progress-bar border-success"></span>#}
+{#                        </span>#}
+{#                        <div class="progress-value w-100 h-100 rounded-circle d-flex align-items-center justify-content-center">#}
+{#                            <div class="h2 font-weight-bold">{{ parking_zones.vacant_slots}}</div>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                    <!-- END -->#}
+{##}
+{##}
+{#                </div>#}
+{#            </div>#}
+{##}
+{#            <div class="col-xl-3 col-lg-6 col-sm-12 mb-3">#}
+{#                <div class="bg-white rounded-lg p-5 shadow">#}
+{#                    <h2 class="h6 font-weight-bold text-center mb-4">Total Reservation</h2>#}
+{##}
+{#                    <!-- Progress bar 4 -->#}
+{#                    <div class="progress mx-auto" data-value={{parking_zones.occupied_slots|percentage:parking_zones.num_of_slots}}>#}
+{#                        <span class="progress-left">#}
+{#                                    <span class="progress-bar border-warning"></span>#}
+{#                        </span>#}
+{#                        <span class="progress-right">#}
+{#                                    <span class="progress-bar border-warning"></span>#}
+{#                        </span>#}
+{#                        <div class="progress-value w-100 h-100 rounded-circle d-flex align-items-center justify-content-center">#}
+{#                            <div class="h2 font-weight-bold">{{parking_zones.occupied_slots}}</div>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                    <!-- END -->#}
+{##}
+{##}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
+{#        {% endfor %}#}
+{#    </div>#}
+{#</section>#}
+<section>
+    <div class="container-fluid">
+       <div class="col-50">
+          <div class="col-md-15">
+             <div class="container-fluid">
+                 <br>
+                 <br>
+                    <h3 class="text-center  text-success">Parking Zones Details </h3>
+             </div>
+          </div>
+          <div class="col-md-15">
+          <div class="table-responsive">
+               <table class="table table-striped" id="dataTable" width="100%" cellspacing="0">
+                   <thead>
+                       <tr>
+                           <th>Parking Zone</th>
+                           <th>Location</th>
+                           <th>Total Slots</th>
+                           <th>Vacant Slots</th>
+                           <th>Price</th>
+                       </tr>
+                   </thead>
+                   <tbody>
+                       {% for parking_zone in all_parking_zones %}
+                       <tr>
+                           <td>{{parking_zone.name}}</td>
+                           <td>{{parking_zone.address}}</td>
+                           <td>{{parking_zone.num_of_slots}}</td>
+                           <td>{{parking_zone.vacant_slots}}</td>
+                           <td>{{parking_zone.price}}</td>
+
+                       </tr>
+                       {% endfor %}
+
+
+                   </tbody>
+               </table>
+          </div>
+                       </div>
+          <div class="col-md-15">
+             <div class="container-fluid">
+                 <h3 class="text-center  text-success">All Ticket Records</h3>
+             </div>
+          </div>
+          <div class="col-md-15">
+                       <div class="table-responsive">
+                           <table class="table table-striped" id="dataTable" width="100%" cellspacing="0">
+                               <h5>Date - {{ today | date:"d/m/Y" }}</h5>
+                               <thead>
+                                   <tr>
+                                       <th>Username</th>
+                                       <th>Ticket ID</th>
+                                     <th>Start Date</th>
+                                     <th>Finish Date</th>
+                                     <th>Paking Zone</th>
+                                     <th>Plate Number</th>
+                                     <th>Status</th>
+                                   </tr>
+                               </thead>
+
+                               <tbody>
+                                   {% for reservation in reservations %}
+                                   <tr>
+                                        <td>{{reservation.customer}}</td>
+                                   <td>{{reservation.ticket_code}}</td>
+                                       <td>{{reservation.start_date}}</td>
+                                       <td>{{reservation.finish_date}}</td>
+                                       <td>{{reservation.parking_zone}}</td>
+                                       <td>{{reservation.plate_number}}</td>
+                                       {% if reservation.checked_out is True %}
+                                         <td>Checked Out</td>
+                                        {% else %}
+                                         <td>Active</td>
+                                       {% endif %}
+                                   </tr>
+                                   {% endfor %}
+
+
+                               </tbody>
+                           </table>
+                       </div>
+                   </div>
+               </div>
+             </div>
+</section>
+
+{% endblock body %}
+{#{% block js %}#}
+{#<!-- jquery for rooms stats  starts here-->#}
+{#<script>#}
+{#    $(function() {#}
+{##}
+{#        $(".progress").each(function() {#}
+{##}
+{#            var value = $(this).attr('data-value');#}
+{#            var left = $(this).find('.progress-left .progress-bar');#}
+{#            var right = $(this).find('.progress-right .progress-bar');#}
+{##}
+{#            if (value > 0) {#}
+{#                if (value <= 50) {#}
+{#                    right.css('transform', 'rotate(' + percentageToDegrees(value) + 'deg)')#}
+{#                } else {#}
+{#                    right.css('transform', 'rotate(180deg)')#}
+{#                    left.css('transform', 'rotate(' + percentageToDegrees(value - 50) + 'deg)')#}
+{#                }#}
+{#            }#}
+{##}
+{#        })#}
+{##}
+{#        function percentageToDegrees(percentage) {#}
+{##}
+{#            return percentage / 100 * 360#}
+{##}
+{#        }#}
+{##}
+{#    });#}
+{#</script>#}
+{#<!--Jquery for room stats ends here-->#}
+{#{% endblock js %}#}

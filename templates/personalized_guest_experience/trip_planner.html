@@ -1,0 +1,328 @@
+{% extends 'base.html' %}
+
+{% block body %}
+<div class="container py-5">
+    <h2 class="text-center mb-5">🧨 Plan Your Trip</h2>
+
+    <!-- Chatbot Interface -->
+    <section id="recommendations" class="mb-5">
+        <div class="chat-container">
+            <form id="chat-form">
+                <input type="text" id="user-input" placeholder="Type your message..." required>
+                <button type="submit">Send</button>
+            </form>
+
+            <div id="chat-box">
+                <!-- Messages will appear here -->
+            </div>
+        </div>
+    </section>
+
+    <hr class="separator">
+
+    <!-- User's Trip Plan -->
+    <section class="mt-5">
+        <h3 class="mb-4 text-center">🛫 Your Planned Trip</h3>
+        <div id="trip-plan" class="mb-5">
+            <!-- Hardcoded Trip Plan (Static HTML) -->
+        </div>
+    </section>
+
+    <!-- Surprise Me Button -->
+    <section class="mt-5 text-center">
+        <h3 class="mb-4">🎉 Feeling Adventurous?</h3>
+        <button id="surprise-me" class="btn btn-premium px-5">
+            🎲 Surprise Me!
+        </button>
+    </section>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    let typingIndicator;
+
+    function scrollToBottom() {
+        const chatBox = document.getElementById('chat-box');
+        chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    function showTyping() {
+        typingIndicator = document.createElement('div');
+        typingIndicator.classList.add('message', 'bot-message');
+        typingIndicator.innerHTML = `
+            <div class="typing">
+                <span></span><span></span><span></span>
+            </div>
+        `;
+        document.getElementById('chat-box').appendChild(typingIndicator);
+        scrollToBottom();
+    }
+
+    function hideTyping() {
+        if (typingIndicator) {
+            typingIndicator.remove();
+            typingIndicator = null;
+        }
+    }
+
+    const chatForm = document.getElementById('chat-form');
+    const userInput = document.getElementById('user-input');
+    const chatBox = document.getElementById('chat-box');
+
+    if (chatForm && userInput && chatBox) {
+        chatForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const message = userInput.value.trim();
+            if (message === '') return;
+
+            // Add user's message to chat
+            const userMessage = document.createElement('div');
+            userMessage.classList.add('user-message');
+            userMessage.textContent = message;
+            chatBox.appendChild(userMessage);
+            scrollToBottom();
+
+            // Clear input box
+            userInput.value = '';
+
+            // Show typing animation
+            showTyping();
+
+            try {
+                const response = await fetch("{% url 'personalized_guest_experience:chatbot_response' %}", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': '{{ csrf_token }}',
+                    },
+                    body: JSON.stringify({ user_input: message })
+                });
+
+                const data = await response.json();
+                hideTyping();
+
+                if (data.error) {
+                    const errorMessage = document.createElement('div');
+                    errorMessage.classList.add('message', 'bot-message');
+                    errorMessage.innerText = '⚠️ ' + data.error;
+                    chatBox.appendChild(errorMessage);
+                } else {
+                    const botMessage = document.createElement('div');
+                    botMessage.classList.add('message', 'bot-message');
+                    botMessage.innerText = data.bot_reply;
+                    chatBox.appendChild(botMessage);
+
+                    // Check if there's a suggested activity
+                    if (data.suggested_activity) {
+                        const buttonContainer = document.createElement('div');
+                        buttonContainer.classList.add('quick-replies');
+
+                        const yesButton = document.createElement('button');
+                        yesButton.classList.add('quick-reply-btn');
+                        yesButton.innerText = "Yes, add to my trip";
+                        yesButton.addEventListener('click', () => {
+                            updateTripPlan([data.suggested_activity]);
+                            buttonContainer.remove(); // Hide buttons after adding
+                        });
+
+                        const noButton = document.createElement('button');
+                        noButton.classList.add('quick-reply-btn');
+                        noButton.innerText = "No, thanks";
+                        noButton.addEventListener('click', () => {
+                            buttonContainer.remove(); // Hide buttons after rejecting
+                        });
+
+                        buttonContainer.appendChild(yesButton);
+                        buttonContainer.appendChild(noButton);
+
+                        chatBox.appendChild(buttonContainer);
+                    }
+                }
+
+                scrollToBottom();
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Something went wrong. Please try again!');
+            }
+        });
+    }
+
+    function updateTripPlan(activities) {
+        const tripPlanDiv = document.getElementById('trip-plan');
+        let storedActivities = JSON.parse(localStorage.getItem('tripPlan')) || [];
+
+        activities.forEach(rec => {
+            const newTripActivity = document.createElement('div');
+            newTripActivity.classList.add('trip-activity');
+            newTripActivity.innerHTML = `
+                <h5>🌟 ${rec.name}</h5>
+                <p>📍 Location: ${rec.location}</p>
+                <p>🕒 Time: ${rec.time}</p>
+            `;
+            tripPlanDiv.appendChild(newTripActivity);
+            storedActivities.push(rec);
+        });
+
+        localStorage.setItem('tripPlan', JSON.stringify(storedActivities));
+    }
+
+    function loadTripPlan() {
+        const tripPlanDiv = document.getElementById('trip-plan');
+        const storedActivities = JSON.parse(localStorage.getItem('tripPlan')) || [];
+
+        storedActivities.forEach(rec => {
+            const savedActivity = document.createElement('div');
+            savedActivity.classList.add('trip-activity');
+            savedActivity.innerHTML = `
+                <h5>🌟 ${rec.name}</h5>
+                <p>📍 Location: ${rec.location}</p>
+                <p>🕒 Time: ${rec.time}</p>
+            `;
+            tripPlanDiv.appendChild(savedActivity);
+        });
+    }
+
+    loadTripPlan();
+
+    document.getElementById('surprise-me').addEventListener('click', function() {
+        fetch("{% url 'personalized_guest_experience:surprise_me' %}")
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    alert(data.error);
+                } else {
+                    alert(`🎉 Surprise Activity: ${data.activity_name} at ${data.activity_location} Time: ${data.activity_time}`);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Something went wrong while fetching the surprise activity.');
+            });
+    });
+});
+</script>
+{% endblock %}
+
+{% block styles %}
+<style>
+/* body {
+    background: linear-gradient(135deg, #1a1a2e, #16213e);
+    font-family: 'Playfair Display', 'Poppins', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+} */
+
+h2, h3 {
+    color: #ffd700;
+    font-weight: 700;
+    font-family: 'Playfair Display', serif;
+    letter-spacing: 1px;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+h5 {
+    margin: 8px 0 6px;
+    font-weight: 600;
+    font-family: 'Playfair Display', serif;
+    color: #ffcc70;
+}
+
+p {
+    margin: 4px 0;
+    color: #e0e0e0;
+}
+
+/* Separator line */
+.separator {
+    border: 1px solid #6c63ff;
+    margin: 30px 0;
+}
+
+/* Your Trip Plan Section */
+.trip-plan-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 15px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+}
+
+.trip-activity {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 20px;
+    margin: 15px 0;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(255, 215, 0, 0.2);
+    border-left: 5px solid #ffd700;
+    width: 100%;
+    max-width: 500px;
+    position: relative;
+}
+
+.trip-activity .activity-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.trip-activity h5 {
+    margin: 0;
+    font-size: 18px;
+    color: #ffd700;
+}
+
+.remove-btn {
+    background-color: transparent;
+    border: none;
+    color: #ff4747;
+    font-size: 18px;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.remove-btn:hover {
+    color: #ff0000;
+}
+
+.trip-activity p {
+    font-size: 14px;
+    color: #d3d3d3;
+}
+
+/* Surprise Me button */
+#surprise-me {
+    background: linear-gradient(135deg, #6c63ff, #a084ca);
+    border: none;
+    color: #fff;
+    font-size: 18px;
+    font-weight: 600;
+    border-radius: 30px;
+    padding: 14px 40px;
+    transition: background 0.4s ease;
+    box-shadow: 0 8px 20px rgba(108, 99, 255, 0.4);
+}
+
+#surprise-me:hover {
+    background: linear-gradient(135deg, #a084ca, #6c63ff);
+    box-shadow: 0 8px 30px rgba(108, 99, 255, 0.6);
+}
+
+/* Add premium button style */
+.btn-premium {
+    background: linear-gradient(135deg, #ffcc70, #ffb347);
+    border-radius: 30px;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 14px 40px;
+    transition: background 0.3s ease;
+    box-shadow: 0 8px 20px rgba(255, 215, 0, 0.4);
+}
+
+.btn-premium:hover {
+    background: linear-gradient(135deg, #ffb347, #ffcc70);
+    box-shadow: 0 8px 25px rgba(255, 215, 0, 0.5);
+}
+</style>
+{% endblock %}

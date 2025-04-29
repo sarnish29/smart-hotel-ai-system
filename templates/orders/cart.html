@@ -1,0 +1,127 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load custom_tags %}
+{% block css %}
+ <style>
+        .progress {
+            width: 150px;
+            height: 150px;
+            background: none;
+            position: relative;
+        }
+
+        .progress::after {
+            content: "";
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 6px solid #eee;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .progress>span {
+            width: 50%;
+            height: 100%;
+            overflow: hidden;
+            position: absolute;
+            top: 0;
+            z-index: 1;
+        }
+
+        .progress .progress-left {
+            left: 0;
+        }
+
+        .progress .progress-bar {
+            width: 100%;
+            height: 100%;
+            background: none;
+            border-width: 6px;
+            border-style: solid;
+            position: absolute;
+            top: 0;
+        }
+
+        .progress .progress-left .progress-bar {
+            left: 100%;
+            border-top-right-radius: 80px;
+            border-bottom-right-radius: 80px;
+            border-left: 0;
+            -webkit-transform-origin: center left;
+            transform-origin: center left;
+        }
+
+        .progress .progress-right {
+            right: 0;
+        }
+
+        .progress .progress-right .progress-bar {
+            left: -100%;
+            border-top-left-radius: 80px;
+            border-bottom-left-radius: 80px;
+            border-right: 0;
+            -webkit-transform-origin: center right;
+            transform-origin: center right;
+        }
+
+        .progress .progress-value {
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+
+        body {
+            min-height: 100vh;
+        }
+
+        .rounded-lg {
+            border-radius: 1rem;
+        }
+
+        .text-gray {
+            color: #aaa;
+        }
+
+        div.h4 {
+            line-height: 1rem;
+        }
+    </style>
+{% endblock css %}
+{% block js %}
+<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <script src = "{% static 'orders/main.js' %}"></script>
+{% endblock js %}
+{% block body %}
+
+<div class="container-fluid">
+  <div class="row justify-content-center">
+    <h2 id="cart_heading"></h2>
+    <table class="table">
+        <thead class="thead-light">
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Item Description</th>
+          <th scope="col">Price</th>
+        </tr>
+        </thead>
+        <tbody id="cart_body">
+        </tbody>
+    </table>
+
+
+    <h3>Total: <span class="badge badge-primary" id="total"></span></h3>
+  </div>
+
+  <div class="row justify-content-center">
+    <button id="checkout_button" type="button" class="btn btn-success" onclick="checkout()">Checkout</button>
+  </div>
+</div>
+
+
+{% endblock body %}

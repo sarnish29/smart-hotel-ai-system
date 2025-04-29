@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block css %}
+ <style>
+        .progress {
+            width: 150px;
+            height: 150px;
+            background: none;
+            position: relative;
+        }
+
+        .progress::after {
+            content: "";
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 6px solid #eee;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .progress>span {
+            width: 50%;
+            height: 100%;
+            overflow: hidden;
+            position: absolute;
+            top: 0;
+            z-index: 1;
+        }
+
+        .progress .progress-left {
+            left: 0;
+        }
+
+        .progress .progress-bar {
+            width: 100%;
+            height: 100%;
+            background: none;
+            border-width: 6px;
+            border-style: solid;
+            position: absolute;
+            top: 0;
+        }
+
+        .progress .progress-left .progress-bar {
+            left: 100%;
+            border-top-right-radius: 80px;
+            border-bottom-right-radius: 80px;
+            border-left: 0;
+            -webkit-transform-origin: center left;
+            transform-origin: center left;
+        }
+
+        .progress .progress-right {
+            right: 0;
+        }
+
+        .progress .progress-right .progress-bar {
+            left: -100%;
+            border-top-left-radius: 80px;
+            border-bottom-left-radius: 80px;
+            border-right: 0;
+            -webkit-transform-origin: center right;
+            transform-origin: center right;
+        }
+
+        .progress .progress-value {
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+
+        body {
+            min-height: 100vh;
+        }
+
+        .rounded-lg {
+            border-radius: 1rem;
+        }
+
+        .text-gray {
+            color: #aaa;
+        }
+
+        div.h4 {
+            line-height: 1rem;
+        }
+    </style>
+{% endblock css %}
+
+
+{% block body %}
+<div class="container-fluid">
+    <div class="row justify-content-center" style="margin-top:20px;">
+      <iframe 
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3914.236420342979!2d77.2747423146236!3d11.49328439182292!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ba96ff4be2f6c4f%3A0x6fdbd6a17e2616b3!2sBannari%20Amman%20Institute%20of%20Technology!5e0!3m2!1sen!2sin!4v1712829751962!5m2!1sen!2sin" 
+        width="600" 
+        height="450" 
+        style="border:0;" 
+        allowfullscreen="" 
+        loading="lazy" 
+        referrerpolicy="no-referrer-when-downgrade">
+      </iframe>
+    </div>
+  
+    <div class="row justify-content-center" style="margin-top:20px;">
+      <ul>
+        <li><strong>Bannari Amman Institute of Technology</strong></li>
+        <li>Alathukombai, Sathyamangalam, Erode District</li>
+        <li>Tamil Nadu - 638401, India</li>
+        <li>Located on Sathy-Bhavani State Highway</li>
+      </ul>
+    </div>
+  </div>  
+
+{% endblock body %}

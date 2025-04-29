@@ -1,0 +1,273 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}👑 Royal Events | Luxe Hotel{% endblock %}
+
+{% block body %}
+<div class="container py-5 position-relative overflow-hidden" style="border-radius: 20px; padding: 50px; perspective: 1000px;">
+    
+    <!-- Particle Blow Effect Background -->
+    <div id="particles-js" class="position-absolute top-0 start-0 w-100 h-100" style="z-index: 0;"></div>
+
+    <div class="position-relative" style="z-index: 1;">
+        <div class="text-center mb-5">
+            <h1 class="display-5 fw-bold text-gold" style="font-family: 'Playfair Display', serif;">👑 Exclusive Royal Events</h1>
+            <p class="lead text-muted" style="font-family: 'Cormorant Garamond', serif;">Curated experiences for distinguished guests</p>
+        </div>
+
+        {% if live_events %}
+        <div class="row g-4">
+            {% for event in page_obj %}
+            <div class="col-md-6 col-lg-4">
+                <div class="card shadow-lg border-0 rounded-4 h-100 event-card position-relative overflow-hidden {% if event.is_today %}highlight-today bounce-animation{% endif %}" 
+                     style="background: white; border: 1px solid rgba(212, 175, 55, 0.3);">
+
+
+                    <div class="card-body d-flex flex-column p-4" style="color: #333;">
+                        <h5 class="card-title fw-bold mb-3" style="color: #D4AF37; font-family: 'Playfair Display', serif; font-size: 1.4rem;">{{ event.name }}</h5>
+
+                        <p class="card-text mb-2" style="font-family: 'Cormorant Garamond', serif;">
+                            <i class="bi bi-clock-fill text-gold"></i> <strong class="text-dark">Start:</strong> <span class="text-muted">{{ event.start_time|date:"D, d M Y H:i" }}</span><br>
+                            <i class="bi bi-clock-history text-gold"></i> <strong class="text-dark">End:</strong> <span class="text-muted">{{ event.end_time|date:"D, d M Y H:i" }}</span>
+                        </p>
+
+                        <p class="card-text mb-3" style="font-family: 'Cormorant Garamond', serif;">
+                            <i class="bi bi-geo-alt-fill text-gold"></i> <strong class="text-dark">Location:</strong> <span class="text-muted">{{ event.locations }}</span><br>
+                            <i class="bi bi-building-fill text-gold"></i> <strong class="text-dark">Venue:</strong> <span class="text-muted">{{ event.venue }}</span>
+                        </p>
+
+                        {% if event.tags %}
+                        <p class="card-text mb-3" style="font-family: 'Cormorant Garamond', serif;">
+                            <i class="bi bi-tag-fill text-gold"></i> <strong class="text-dark">Tags:</strong> <span class="text-muted">{{ event.tags }}</span>
+                        </p>
+                        {% endif %}                               
+                        
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Pagination Controls -->
+        <div class="d-flex justify-content-center mt-5">
+            <nav aria-label="Page navigation">
+                <ul class="pagination pagination-lg">
+                    <li class="page-item {% if not page_obj.has_previous %}disabled{% endif %}">
+                        <a class="page-link" href="?page=1" aria-label="First" style="background-color: white; color: #D4AF37; border: 1px solid #D4AF37; font-family: 'Cormorant Garamond', serif;">
+                            ««
+                        </a>
+                    </li>
+                    <li class="page-item {% if not page_obj.has_previous %}disabled{% endif %}">
+                        <a class="page-link" href="{% if page_obj.has_previous %}?page={{ page_obj.previous_page_number }}{% else %}#{% endif %}" aria-label="Previous" style="background-color: white; color: #D4AF37; border: 1px solid #D4AF37; font-family: 'Cormorant Garamond', serif;">
+                            «
+                        </a>
+                    </li>
+
+                    {% for num in page_obj.paginator.page_range %}
+                        {% if page_obj.number == num %}
+                            <li class="page-item active"><a class="page-link" href="#" style="background-color: #D4AF37; color: white; border: 1px solid #D4AF37; font-family: 'Cormorant Garamond', serif; font-weight: 600;">{{ num }}</a></li>
+                        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                            <li class="page-item"><a class="page-link" href="?page={{ num }}" style="background-color: white; color: #D4AF37; border: 1px solid #D4AF37; font-family: 'Cormorant Garamond', serif;">{{ num }}</a></li>
+                        {% endif %}
+                    {% endfor %}
+
+                    <li class="page-item {% if not page_obj.has_next %}disabled{% endif %}">
+                        <a class="page-link" href="{% if page_obj.has_next %}?page={{ page_obj.next_page_number }}{% else %}#{% endif %}" aria-label="Next" style="background-color: white; color: #D4AF37; border: 1px solid #D4AF37; font-family: 'Cormorant Garamond', serif;">
+                            »
+                        </a>
+                    </li>
+                    <li class="page-item {% if not page_obj.has_next %}disabled{% endif %}">
+                        <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}" aria-label="Last" style="background-color: white; color: #D4AF37; border: 1px solid #D4AF37; font-family: 'Cormorant Garamond', serif;">
+                            »»
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+
+        {% else %}
+        <div class="alert alert-light text-center mt-5" role="alert" style="background-color: white; color: #D4AF37; border: 1px solid #D4AF37; font-family: 'Cormorant Garamond', serif;">
+            No exclusive events scheduled at this time. Please check back soon.
+        </div>
+        {% endif %}
+    </div> <!-- end position relative -->
+</div> <!-- end container -->
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    // Select all event cards
+    const eventCards = document.querySelectorAll('.event-card');
+    
+    eventCards.forEach(card => {
+        card.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-10px)';
+            this.style.boxShadow = '0 15px 30px rgba(212, 175, 55, 0.2)';
+            this.style.border = '1px solid rgba(212, 175, 55, 0.7)';
+        });
+        
+        card.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0)';
+            this.style.boxShadow = '0 5px 15px rgba(0, 0, 0, 0.1)';
+            this.style.border = '1px solid rgba(212, 175, 55, 0.3)';
+        });
+    });
+});
+</script>
+{% endblock %}
+
+{% block extra_styles %}
+<style>
+    /* Import elegant fonts */
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Cormorant+Garamond:wght@400;600&display=swap');
+    
+    /* Gold color definition */
+    .text-gold {
+        color: #D4AF37 !important;
+    }
+    
+    .bg-gold {
+        background-color: #D4AF37 !important;
+    }
+    
+    /* Bounce Animation for Today's Events */
+    @keyframes bounce {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-20px); }
+    }
+    
+    .bounce-animation {
+        animation: bounce 2s infinite;
+    }
+    
+    /* Event Cards */
+    .event-card {
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+        overflow: hidden;
+        margin-bottom: 20px;
+        position: relative;
+        border: 1px solid rgba(212, 175, 55, 0.3);
+    }
+
+    .event-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 30px rgba(212, 175, 55, 0.2);
+        border: 1px solid rgba(212, 175, 55, 0.7);
+    }
+
+    .highlight-today {
+        background: white;
+        border: 2px solid #D4AF37 !important;
+        box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+    }
+
+    /* Badge for 'Today' */
+    .pulse-badge {
+        background: linear-gradient(145deg, #D4AF37 0%, #F5D68F 100%);
+        color: #1a1a1a !important;
+        animation: pulse 2s infinite;
+        font-family: 'Cormorant Garamond', serif;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+    }
+
+    @keyframes pulse {
+        0% { transform: scale(1); box-shadow: 0 0 10px rgba(212, 175, 55, 0.5); }
+        50% { transform: scale(1.05); box-shadow: 0 0 15px rgba(212, 175, 55, 0.7); }
+        100% { transform: scale(1); box-shadow: 0 0 10px rgba(212, 175, 55, 0.5); }
+    }
+
+    /* Card body */
+    .card-body {
+        padding: 25px;
+        background: white;
+    }
+
+    /* Title Styling */
+    .card-title {
+        color: #D4AF37 !important;
+        font-family: 'Playfair Display', serif;
+        font-size: 1.4rem;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+        padding-bottom: 10px;
+        margin-bottom: 15px;
+    }
+
+    /* Text Styling */
+    .card-text {
+        color: #555 !important;
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 1.1rem;
+        line-height: 1.6;
+    }
+
+    strong {
+        color: #333 !important;
+        font-weight: 600;
+    }
+
+    /* Pagination */
+    .pagination {
+        background: transparent;
+        border-radius: 10px;
+        margin-top: 40px;
+        padding: 10px 20px;
+    }
+
+    .page-item.active .page-link {
+        background-color: #D4AF37 !important;
+        color: white !important;
+        border-radius: 5px;
+        font-weight: 600;
+        border: 1px solid #D4AF37;
+    }
+
+    .page-link {
+        color: #D4AF37 !important;
+        border: 1px solid #D4AF37;
+        border-radius: 5px;
+        padding: 10px 18px;
+        margin: 0 5px;
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 1.1rem;
+        transition: all 0.3s ease;
+        background: white;
+    }
+
+    .page-link:hover {
+        background-color: rgba(212, 175, 55, 0.1);
+    }
+
+    .page-item.disabled .page-link {
+        color: #ccc !important;
+        border-color: #ccc;
+        cursor: not-allowed;
+        opacity: 0.7;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .container {
+            padding: 30px 15px;
+        }
+        
+        .card-title {
+            font-size: 1.2rem;
+        }
+        
+        .card-text {
+            font-size: 1rem;
+        }
+        
+        .bounce-animation {
+            animation: bounce 3s infinite; /* Slower bounce on mobile */
+        }
+    }
+</style>
+{% endblock %}
